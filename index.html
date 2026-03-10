@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy 21st Birthday Elsie</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 60px;
+      color: #fff;
+      text-shadow: 2px 2px 5px #000;
+      animation: bounce 2s infinite;
+    }
+    p {
+      font-size: 24px;
+      color: #fff;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    .balloons {
+      font-size: 80px;
+      animation: float 3s infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+      100% { transform: translateY(0); }
+    }
+    button {
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 20px;
+      background: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff3b2e;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+    .poem {
+      margin-top: 40px;
+      font-size: 22px;
+      color: #fff;
+      font-style: italic;
+      line-height: 1.8;
+    }
+    .photo-frame {
+      margin: 30px auto;
+      width: 300px;
+      height: 300px;
+      border: 8px solid #fff;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(255,0,100,0.8);
+      position: relative;
+      animation: glow 2s infinite alternate;
+    }
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 20px rgba(255,0,100,0.6); }
+      to { box-shadow: 0 0 40px rgba(255,0,100,1); }
+    }
+    .sparkle-heart {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 340px;
+      height: 340px;
+      border: 4px dashed rgba(255,0,100,0.8);
+      border-radius: 50%;
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .heart {
+      position: fixed;
+      font-size: 24px;
+      color: red;
+      animation: fall 6s linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-50px); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .kiss {
+      position: fixed;
+      font-size: 28px;
+      color: hotpink;
+      animation: floatKiss 4s ease-out forwards;
+    }
+    @keyframes floatKiss {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="balloons">🎈🎉🎂🎁</div>
+  <h1>Happy 21st Birthday Elsie, MY LOVE ❤️</h1>
+  <p>Wishing you joy, laughter, and unforgettable memories today!</p>
+  <div class="balloons">🎈🎉🎂🎁</div>
+
+  <!-- Photo Frame with Sparkling Heart -->
+  <div class="photo-frame">
+    <img src="elsie.jpeg" alt="Elsie's Photo">
+    <div class="sparkle-heart"></div>
+  </div>
+
+  <!-- Romantic Poem -->
+  <div class="poem">
+    On this day so bright and true,<br>
+    My heart beats only for you.<br>
+    Twenty-one candles, love’s gentle flame,<br>
+    Each whispering softly your beautiful name.<br><br>
+    Through every dawn, through every night,<br>
+    You are my joy, my guiding light.<br>
+    Elsie, my love, forever you’ll be,<br>
+    The sweetest gift life gave to me. ❤️
+  </div>
+
+  <!-- Buttons -->
+  <button onclick="launchConfetti()">Launch Confetti 🎉</button>
+  <button onclick="launchKisses()">Click to Kiss 💋</button>
+
+  <!-- Background Music -->
+  <audio autoplay loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let confetti = [];
+
+    function randomColor() {
+      const colors = ['#ff0', '#0f0', '#0ff', '#f0f', '#f00', '#00f'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function launchConfetti() {
+      for (let i = 0; i < 200; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 2,
+          d: Math.random() * 10 + 5,
+          color: randomColor(),
+          tilt: Math.random() * 10 - 10
+        });
+      }
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach((c, i) => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+        ctx.fillStyle = c.color;
+        ctx.fill();
+        c.y += c.d;
+        c.x += Math.sin(c.tilt);
+        if (c.y > canvas.height) {
+          confetti.splice(i, 1);
+        }
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+
+    // Falling hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = "-50px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }
+    setInterval(createHeart, 800);
+
+    // Floating kisses
+    function launchKisses() {
+      for (let i = 0; i < 10; i++) {
+        const kiss = document.createElement("div");
+        kiss.className = "kiss";
+        kiss.innerHTML = "💋";
+        kiss.style.left = Math.random() * window.innerWidth + "px";
+        kiss.style.top = (window.innerHeight - 100) + "px";
+        document.body.appendChild(kiss);
+
+        setTimeout(() => {
+          kiss.remove();
+        }, 4000);
+      }
+    }
+
+    // Auto-launch confetti and pop-up message when page loads
+    window.onload = () => {
+      launchConfetti();
+      drawConfetti();
+      alert("🎉 Surprise! Happy 21st Birthday Elsie, MY LOVE ❤️");
+    };
+  </script>
+</body>
+</html>
